@@ -1,8 +1,6 @@
-import { useState } from "react";
-
-function ProductCard({ product }) {
-
-  const [liked, setLiked] = useState(false);
+function ProductCard({ product, wishlist, cart, addWishlist, addCart }) {
+  const inWishlist = wishlist.some((item) => item.id === product.id);
+  const inCart = cart.some((item) => item.id === product.id);
 
   return (
     <div className="card">
@@ -25,9 +23,7 @@ function ProductCard({ product }) {
           {product.category}
         </p>
 
-        <p>
-          {product.description}
-        </p>
+        <p>{product.description}</p>
 
         <p className="contact">
           📞 {product.contact}
@@ -36,12 +32,17 @@ function ProductCard({ product }) {
         <div className="card-buttons">
 
           <button
-            className="wishlist-btn"
-            onClick={() =>
-              setLiked(!liked)
-            }
+            className={`wishlist-btn ${inWishlist ? 'active' : ''}`}
+            onClick={() => addWishlist(product)}
           >
-            {liked ? "❤️ Saved" : "🤍 Wishlist"}
+            {inWishlist ? '❤️ Wishlist' : '🤍 Wishlist'}
+          </button>
+
+          <button
+            className={`cart-btn ${inCart ? 'in-cart' : ''}`}
+            onClick={() => addCart(product)}
+          >
+            {inCart ? '✔ In Cart' : '🛒 Add to Cart'}
           </button>
 
           <button className="contact-btn">

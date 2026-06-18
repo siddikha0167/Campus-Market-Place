@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ cartCount = 0 }) {
   return (
     <nav className="navbar">
 
@@ -18,6 +18,10 @@ function Navbar() {
 
         <Link to="/wishlist">
           ❤️ Wishlist
+        </Link>
+
+        <Link to="/cart">
+          🛒 My Cart ({cartCount})
         </Link>
 
       </div>

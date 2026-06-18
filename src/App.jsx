@@ -12,6 +12,7 @@ import SearchBar from "./components/Searchbar";
 import CategoryFilter from "./components/Categoryfilter";
 import SellPage from "./components/SellPage";
 import WishlistPage from "./components/WishlistPage";
+import CartPage from "./components/CartPage";
 
 import productsData from "./data/products";
 
@@ -22,7 +23,11 @@ function Home({
   search,
   setSearch,
   category,
-  setCategory
+  setCategory,
+  addWishlist,
+  addCart,
+  wishlist,
+  cart
 }) {
   const filteredProducts = products.filter((product) => {
 
@@ -40,7 +45,7 @@ function Home({
 
   return (
     <>
-      <Navbar />
+      <Navbar cartCount={cart.length} />
 
       <div className="hero">
         <h1>🎓 Campus Marketplace</h1>
@@ -63,6 +68,10 @@ function Home({
 
       <ProductList
         products={filteredProducts}
+        wishlist={wishlist}
+        cart={cart}
+        addWishlist={addWishlist}
+        addCart={addCart}
       />
 
       <Footer />
@@ -85,9 +94,12 @@ function App() {
 
   const [search, setSearch] = useState("");
 
+
+
   const [category, setCategory] =
     useState("All");
 
+    
   useEffect(() => {
 
     localStorage.setItem(
@@ -105,7 +117,35 @@ function App() {
     ]);
 
   };
+  const [wishlist, setWishlist] = useState([]);
+  const [cart, setCart] = useState([]);
+  const addWishlist = (product) => {
+    const exists = wishlist.find(
+      item => item.id === product.id
+    );
 
+    if (exists) {
+      setWishlist(wishlist.filter((item) => item.id !== product.id));
+    } else {
+      setWishlist([
+        ...wishlist,
+        product
+      ]);
+    }
+  };
+
+  const addCart = (product) => {
+    const exists = cart.find(
+      item => item.id === product.id
+    );
+
+    if (!exists) {
+      setCart([
+        ...cart,
+        product
+      ]);
+    }
+  };
   return (
     <BrowserRouter>
 
@@ -120,6 +160,10 @@ function App() {
               setSearch={setSearch}
               category={category}
               setCategory={setCategory}
+              addWishlist={addWishlist}
+              addCart={addCart}
+              wishlist={wishlist}
+              cart={cart}
             />
           }
         />
@@ -135,7 +179,25 @@ function App() {
 
         <Route
           path="/wishlist"
-          element={<WishlistPage />}
+          element={
+            <WishlistPage
+              wishlist={wishlist}
+              cart={cart}
+              addCart={addCart}
+              cartCount={cart.length}
+            />
+          }
+        />
+
+        <Route
+          path="/cart"
+          element={
+            <CartPage
+              cart={cart}
+              setCart={setCart}
+              cartCount={cart.length}
+            />
+          }
         />
 
       </Routes>

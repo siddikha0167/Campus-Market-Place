@@ -1,6 +1,12 @@
 import ProductCard from "./ProductCard";
 
-function ProductList({ products }) {
+function ProductList({
+  products,
+  wishlist,
+  cart,
+  addWishlist,
+  addCart
+}) {
 
   if (products.length === 0) {
     return (
@@ -23,6 +29,10 @@ function ProductList({ products }) {
         <ProductCard
           key={product.id}
           product={product}
+          wishlist={wishlist}
+          cart={cart}
+          addWishlist={addWishlist}
+          addCart={addCart}
         />
 
       ))}
